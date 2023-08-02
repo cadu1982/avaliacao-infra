@@ -81,9 +81,12 @@ jobs:
         run: |
           helm upgrade --install mongodb ./k8s -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
       
-  #     - name: Deploy Test
-  #       run: |
-  #         curl -k https://k8s.dev.grupoarbi.com/${{ env.GITHUB_REPO_NAME }}/ping
+      - name: Deploy Test
+        run: |
+          kubectl get pods
+          kubectl get svc
+          kubectl get pv
+          kubectl get pvc
 
   
 

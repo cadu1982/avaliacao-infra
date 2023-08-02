@@ -5,11 +5,10 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: {{ .Values.all.github_repo_name }}
-      protocol: {{ .Values.service.ports.protocol }}
+    - name: {{ .Values.all.name }}
       port: {{ .Values.service.ports.port }}
       targetPort: {{ .Values.service.ports.targetPort }}
   selector:
-    app: {{ .Values.all.github_repo_name }}
+    app: {{ .Values.all.name }}
 
 
