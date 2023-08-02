@@ -79,7 +79,7 @@ jobs:
           
       - name: Deploy Helm to AKS
         run: |
-          helm upgrade --install mongoDB ./k8s -n ${{ env.NAMESPACE }} -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
+          helm upgrade --install mongodb ./k8s -n ${{ env.NAMESPACE }} -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
       
   #     - name: Deploy Test
   #       run: |
