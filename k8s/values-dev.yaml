@@ -20,7 +20,7 @@ env:
     
 
 service:
-  name: mongoDB
+  name: mongodb
   type: ClusterIP
   ports:
       protocol: TCP
@@ -28,4 +28,4 @@ service:
       targetPort: 27017
 
 all:
-  name: mongoDB
+  name: mongodb
