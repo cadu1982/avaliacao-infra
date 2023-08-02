@@ -1,0 +1,102 @@
+name: Build and Deploy the app when is merged to master branch
+
+on:
+   push:
+     branches:
+       - master
+
+jobs:
+  Build-Application:
+    runs-on: ubuntu-latest
+        
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.0
+
+      - name: Generate General Tag (Run Date and GitHub Run Number)
+        run: echo "GENERAL_TAG=$(date +'%Y%m%d_'$GITHUB_RUN_NUMBER)" >> $GITHUB_ENV
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push application image to DockerHub Container Registry
+        uses: docker/build-push-action@v4
+        with:
+          tags: cadu1982/app:${{ env.GENERAL_TAG }}
+          push: true
+  
+      
+    outputs:
+      general-tag: ${{ env.GENERAL_TAG }}
+      
+
+
+#=========================================================================================================================
+
+  # Deploy-Dev-AKS:
+  #   runs-on: [self-hosted, arbi_k8s_agent_dev]
+  #   environment: dev
+  #   env:
+  #     SERVER: dev
+  #     GITHUB_REPO_OWNER: ${{needs.Build-Application.outputs.github-repo-owner}}
+  #     GITHUB_REPO_NAME: ${{ needs.Build-Application.outputs.github-repo-name }}
+  #     GENERAL_TAG: ${{ needs.Build-Application.outputs.general-tag }}
+  #     REGISTRY: ${{ needs.Build-Application.outputs.registry-azure }}
+  #     NAMESPACE: arbi
+  #     NAME_AKS: abd1eaus1ncaks001
+  #     RG_AKS: abd1rgeaus1ncaks001
+  #     KEY_VAULT_NAME: abd1kveaus1ncplt001
+  #   needs: ["Build-Application"]
+    
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3.0.0
+
+  #     - name: Azure Login
+  #       uses: Azure/login@v1.4.5
+  #       with:
+  #         creds: ${{ secrets.ABD1SPGHWF001 }}
+      
+  #     - name: Delete dir .kube 
+  #       run: |
+  #         cd $HOME
+  #         rm -r .kube
+
+  #     - name: Login in AKS
+  #       run: az aks get-credentials --resource-group ${{ env.RG_AKS }} --name ${{ env.NAME_AKS }} --admin
+
+  #     - name: Replace Environment Variables
+  #       run: envsubst < ./k8s/values-${{ env.SERVER }}.yaml > ./k8s/values-${{ env.SERVER }}-rplc.yaml
+  #       env:
+  #         GITHUB_REPO_OWNER: ${{ env.GITHUB_REPO_OWNER }}
+  #         GITHUB_REPO_NAME: ${{ env.GITHUB_REPO_NAME }}
+  #         GENERAL_TAG: ${{ env.GENERAL_TAG }}
+  #         REGISTRY: ${{ env.REGISTRY }}
+            
+  #     - name: Action to Get Secrets From Azure Key Vault and updating them in Helm Charts
+  #       uses: BancoArbi/github-get-secrets-keyvault-helm-action@v1.0.0
+  #       with:
+  #         vault-name: ${{ env.KEY_VAULT_NAME }}
+  #         app-reference: "${{ env.GITHUB_REPO_NAME }}-${{ env.SERVER }}"
+          
+  #     - name: Deploy Helm to AKS
+  #       run: |
+  #         helm upgrade --install ${{ env.SET_ENV}} ${{ env.GITHUB_REPO_NAME }} ./k8s -n ${{ env.NAMESPACE }} -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
+      
+  #     - name: Deploy Test
+  #       run: |
+  #         curl -k https://k8s.dev.grupoarbi.com/${{ env.GITHUB_REPO_NAME }}/ping
+
+  #   outputs:
+  #     github-repo-owner: ${{ env.GITHUB_REPO_OWNER }}
+  #     github-repo-name: ${{ env.GITHUB_REPO_NAME }}
+  #     general-tag: ${{ env.GENERAL_TAG }}
+  #     registry-azure: ${{ env.REGISTRY }}
+
+
+  
+
+      
