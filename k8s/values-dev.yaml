@@ -2,8 +2,7 @@ imagePullSecrets:
   name: acrpatsecret
   
 container:
-  image: $REGISTRY/$GITHUB_REPO_OWNER/$GITHUB_REPO_NAME:$GENERAL_TAG
-  tag: $GENERAL_TAG
+  image: mongo:4.4
   pullPolicy: Always
   ports:
     name: web
@@ -16,18 +15,17 @@ container:
       cpu: "500m"
 
 env:
-  ME_CONFIG_MONGODB_ADMINUSERNAME: root
-  ME_CONFIG_MONGODB_ADMINPASSWORD: example
-  ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-  
+  ME_CONFIG_MONGODB_ADMINUSERNAME: $ME_CONFIG_MONGODB_ADMINUSERNAME
+  ME_CONFIG_MONGODB_ADMINPASSWORD: $ME_CONFIG_MONGODB_ADMINPASSWORD
+    
 
 service:
   name: mongoDB
   type: ClusterIP
   ports:
       protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 27017
+      targetPort: 27017
 
 all:
   name: mongoDB
