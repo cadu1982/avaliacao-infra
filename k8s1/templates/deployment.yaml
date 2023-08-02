@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.all.name }}
+spec:
+  template:
+    metadata:
+      name: {{ .Values.all.name }}
+      labels:
+        app: {{ .Values.all.name }}
+    spec:
+      containers:
+        - name: {{ .Values.all.name }}
+          image: {{ .Values.container.image }}
+          imagePullPolicy: {{ .Values.container.pullPolicy }}
+          env:
+            - name: MONGO_URL
+              value: {{ .Values.env.MONGO_URL }}
+          ports:
+          - name: {{ .Values.container.ports.name }}
+            containerPort: 80
+          resources:
+            requests:
+              memory: {{ .Values.container.resources.requests.memory }}
+              cpu: {{ .Values.container.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.container.resources.limits.memory }}
+              cpu: {{ .Values.container.resources.limits.cpu }}
+  selector:
+    matchLabels:
+      app: {{ .Values.all.name }}

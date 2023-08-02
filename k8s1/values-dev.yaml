@@ -1,0 +1,29 @@
+imagePullSecrets:
+  name: acrpatsecret
+  
+container:
+  image: cadu1982/app:$GENERAL_TAG
+  pullPolicy: Always
+  ports:
+    name: web
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+env:
+  MONGO_URL: $MONGO_URL
+  
+service:
+  name: app
+  type: ClusterIP
+  ports:
+      protocol: TCP
+      port: 80
+      targetPort: 80
+
+all:
+  name: app
