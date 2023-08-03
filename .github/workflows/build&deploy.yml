@@ -68,11 +68,6 @@ jobs:
       #   run: |
       #     helm upgrade --install mongodb ./k8s -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
       
-      # - name: Deploy App
-      #   run: |
-      #     microk8s config > /tmp/k8s
-      #     export KUBECONFIG=/tmp/k8s
-
       - name: Replace Environment Variables
         run: envsubst < ./k8s1/values-${{ env.SERVER }}.yaml > ./k8s1/values-${{ env.SERVER }}-rplc.yaml
         env:
