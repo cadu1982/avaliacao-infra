@@ -20,7 +20,7 @@ env:
     
 
 service:
-  name: mongosvc
+  name: mongodb
   type: ClusterIP
   ports:
       protocol: TCP
