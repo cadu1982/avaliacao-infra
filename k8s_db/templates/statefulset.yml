@@ -1,49 +1,33 @@
-apiVersion: v1   
-kind: Service
-metadata:
-  name: mongo
-  labels:
-    name: mongo
-spec:
-  ports:
-  - port: 27017
-    targetPort: 27017
-  clusterIP: None
-  selector:
-    role: mongo
-
----
-
 apiVersion: apps/v1   
 kind: StatefulSet
 metadata:
-  name: mongo
+  name: {{ .Values.all.name }}
 spec:
-  serviceName: "mongo"
+  serviceName: {{ .Values.all.name }}
   replicas: 1
   selector:
     matchLabels:
-      role: mongo
+      role: {{ .Values.all.name }}
   template:
     metadata:
       labels:
-        role: mongo
+        role: {{ .Values.all.name }}
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-        - name: mongo
-          image: mongo:4.4
+        - name: {{ .Values.all.name }}
+          image: {{ .Values.container.image }}
           env:
             - name: MONGO_INITDB_ROOT_USERNAME
-              value: root
+              value: {{ .Values.env.MONGO_INITDB_ROOT_USERNAME }}
             - name: MONGO_INITDB_ROOT_PASSWORD
-              value: toor
+              value: {{ .Values.env.MONGO_INITDB_ROOT_PASSWORD }}
           command:
             - mongod
             - "--replSet"
             - rs0
           ports:
-            - containerPort: 27017
+            - containerPort: {{ .Values.container.ports.containerPort }}
           volumeMounts:
             - name: mongodb-data
               mountPath: /data/db

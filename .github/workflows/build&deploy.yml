@@ -13,20 +13,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.0.0
 
-      - name: Generate General Tag (Run Date and GitHub Run Number)
-        run: echo "GENERAL_TAG=$(date +'%Y%m%d_'$GITHUB_RUN_NUMBER)" >> $GITHUB_ENV
+      # - name: Generate General Tag (Run Date and GitHub Run Number)
+      #   run: echo "GENERAL_TAG=$(date +'%Y%m%d_'$GITHUB_RUN_NUMBER)" >> $GITHUB_ENV
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v2
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push application image to DockerHub Container Registry
-        uses: docker/build-push-action@v4
-        with:
-          tags: cadu1982/app:${{ env.GENERAL_TAG }}
-          push: true
+      # - name: Build and Push application image to DockerHub Container Registry
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     tags: cadu1982/app:${{ env.GENERAL_TAG }}
+      #     push: true
         
     outputs:
       general-tag: ${{ env.GENERAL_TAG }}
@@ -45,38 +45,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3.0.0
 
-  #     - name: Azure Login
-  #       uses: Azure/login@v1.4.5
-  #       with:
-  #         creds: ${{ secrets.ABD1SPGHWF001 }}
-      
-  #     - name: Delete dir .kube 
-  #       run: |
-  #         cd $HOME
-  #         rm -r .kube
-
-  #     - name: Login in AKS
-  #       run: az aks get-credentials --resource-group ${{ env.RG_AKS }} --name ${{ env.NAME_AKS }} --admin
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-region: us-east-1
+          mask-aws-account-id: true
 
       # - name: Replace Environment Variables
-      #   run: envsubst < ./k8s/values-${{ env.SERVER }}.yaml > ./k8s/values-${{ env.SERVER }}-rplc.yaml
+      #   run: envsubst < ./k8s_db/values-${{ env.SERVER }}.yaml > ./k8s_db/values-${{ env.SERVER }}-rplc.yaml
       #   env:
       #     MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
       #     MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} 
           
       # - name: Deploy MondoDB
       #   run: |
-      #     helm upgrade --install mongodb ./k8s -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
+      #     helm upgrade --install mongodb ./k8s -f ./k8s_db/values-${{ env.SERVER }}-rplc.yaml
       
-      - name: Replace Environment Variables
-        run: envsubst < ./k8s1/values-${{ env.SERVER }}.yaml > ./k8s1/values-${{ env.SERVER }}-rplc.yaml
-        env:
-          GENERAL_TAG: ${{ env.GENERAL_TAG }}
-          MONGO_URL: ${{ secrets.MONGO_URL }}
+      # - name: Replace Environment Variables
+      #   run: envsubst < ./k8s_app/values-${{ env.SERVER }}.yaml > ./k8s_app/values-${{ env.SERVER }}-rplc.yaml
+      #   env:
+      #     GENERAL_TAG: ${{ env.GENERAL_TAG }}
+      #     MONGO_URL: ${{ secrets.MONGO_URL }}
                 
-      - name: Deploy App
-        run: |
-          helm upgrade --install app ./k8s1 -f ./k8s1/values-${{ env.SERVER }}-rplc.yaml
+      # - name: Deploy App
+      #   run: |
+      #     helm upgrade --install app ./k8s_app -f ./k8s_app/values-${{ env.SERVER }}-rplc.yaml
 
   
 
