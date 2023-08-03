@@ -64,9 +64,9 @@ jobs:
           MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_INITDB_ROOT_USERNAME }}
           MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_INITDB_ROOT_PASSWORD }} 
           
-      - name: Deploy MondoDB
-        run: |
-          helm upgrade --install mongodb ./k8s -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
+      # - name: Deploy MondoDB
+      #   run: |
+      #     helm upgrade --install mongodb ./k8s -f ./k8s/values-${{ env.SERVER }}-rplc.yaml
       
       - name: Replace Environment Variables
         run: envsubst < ./k8s1/values-${{ env.SERVER }}.yaml > ./k8s1/values-${{ env.SERVER }}-rplc.yaml

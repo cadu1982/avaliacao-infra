@@ -18,7 +18,7 @@ spec:
               value: {{ .Values.env.MONGO_URL }}
           ports:
           - name: {{ .Values.container.ports.name }}
-            containerPort: 3000
+            containerPort: 80
           resources:
             requests:
               memory: {{ .Values.container.resources.requests.memory }}
