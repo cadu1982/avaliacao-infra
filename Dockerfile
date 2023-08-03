@@ -1,13 +1,15 @@
-FROM node:14-alpine
+# Imagem base do Nginx
+FROM nginx
 
-WORKDIR /app
+RUN apt-get update && \
+    apt-get upgrade -y  && \
+    apt-get install -y iputils-ping && \
+    apt-get install -y curl && \
+    apt-get install telnet -y && \
+    apt-get install traceroute -y
 
-COPY package.json ./
+# Expõe a porta do Nginx
+EXPOSE 80
 
-RUN npm install
-
-COPY index.js ./
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
+# Define o comando de inicialização do contêiner
+CMD ["nginx", "-g", "daemon off;"]
