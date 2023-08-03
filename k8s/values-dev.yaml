@@ -5,7 +5,7 @@ container:
   image: mongo:4.4
   pullPolicy: Always
   ports:
-    name: mongodb
+    name: web
   resources:
     requests:
       memory: "128Mi"
@@ -20,7 +20,7 @@ env:
     
 
 service:
-  name: mongodb
+  name: mongosvc
   type: ClusterIP
   ports:
       protocol: TCP
