@@ -1,19 +1,13 @@
-# Imagem base do Nginx
-FROM nginx
+FROM node:14-alpine
 
-RUN apt-get update && \
-    apt-get upgrade -y  && \
-    apt-get install -y iputils-ping && \
-    apt-get install -y curl && \
-    apt-get install telnet -y && \
-    apt-get install traceroute -y && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2930ADAE8CAF5059EE73BB4B58712A2291FA4AD5 && \
-    echo "deb http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.6 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.6.list && \
-    apt-get update && \
-    apt-get install -y mongodb-org
+WORKDIR /app
 
-# Expõe a porta do Nginx
-EXPOSE 80
+COPY package.json ./
 
-# Define o comando de inicialização do contêiner
-CMD ["nginx", "-g", "daemon off;"]
+RUN npm install
+
+COPY index.js ./
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
