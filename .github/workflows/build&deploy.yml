@@ -40,7 +40,7 @@ jobs:
       SERVER: dev
       GENERAL_TAG: ${{ needs.Build-Application.outputs.general-tag }}
       NAME_EKS: infra
-      REGION: us-eats-1
+      REGION: us-east-1
     needs: ["Build-Application"]
     
     steps:
