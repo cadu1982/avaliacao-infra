@@ -55,8 +55,8 @@ jobs:
           aws-region: us-east-1
           mask-aws-account-id: true
       
-      # - name: Configure EKS 
-      #   run:  aws eks update-kubeconfig --region ${{ env.REGION }} --name ${{ env.NAME_EKS }}
+      - name: Configure EKS 
+        run:  aws eks update-kubeconfig --region ${{ env.REGION }} --name ${{ env.NAME_EKS }}
 
       - name: Replace Environment Variables
         run: envsubst < ./k8s_db/values-${{ env.SERVER }}.yaml > ./k8s_db/values-${{ env.SERVER }}-rplc.yaml
