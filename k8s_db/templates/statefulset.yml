@@ -1,29 +1,31 @@
-apiVersion: apps/v1   
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  creationTimestamp: null
+  labels:
+    app: {{ .Values.all.name }}
   name: {{ .Values.all.name }}
 spec:
-  serviceName: {{ .Values.all.name }}
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      role: {{ .Values.all.name }}
+      app: {{ .Values.all.name }}
+  serviceName: "mongo"
   template:
     metadata:
+      creationTimestamp: null
       labels:
-        role: {{ .Values.all.name }}
+        app: {{ .Values.all.name }}
     spec:
-      terminationGracePeriodSeconds: 10
       containers:
-        - name: {{ .Values.all.name }}
-          image: {{ .Values.container.image }}
-          command:
-            - mongod
-            - "--replSet"
-            - rs0
-          ports:
-            - containerPort: {{ .Values.container.ports.containerPort }}
-          volumeMounts:
+      - image: {{ .Values.container.image }}
+        name: {{ .Values.all.name }}
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: {{ .Values.env.MONGO_INITDB_ROOT_USERNAME }}
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: {{ .Values.env.MONGO_INITDB_ROOT_PASSWORD }}
+        volumeMounts:
             - name: mongodb-data
               mountPath: /data/db
       volumes:

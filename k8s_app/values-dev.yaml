@@ -1,6 +1,3 @@
-imagePullSecrets:
-  name: acrpatsecret
-  
 container:
   image: cadu1982/app:$GENERAL_TAG
   pullPolicy: Always
