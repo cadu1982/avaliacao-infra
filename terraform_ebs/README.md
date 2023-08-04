@@ -1,6 +1,13 @@
-reference links:
-[1] Amazon EBS CSI driver add-on : https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
+### Precisa de algumas configurações no cluster:
 
-[2] How to create IAM OIDC provider for EBS CSI driver add-on : https://docs.aws.amazon.com/eks/latest/userguide/csi-iam-role.html
+Amazon EBS CSI driver add-on : 
 
-[3] Managing the EBS CSI driver add-on : https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html
+https://docs.aws.amazon.com/eks/latest/userguide/ebs-csi.html
+
+How to create IAM OIDC provider for EBS CSI driver add-on : 
+
+https://docs.aws.amazon.com/eks/latest/userguide/csi-iam-role.html
+
+Managing the EBS CSI driver add-on : 
+
+https://docs.aws.amazon.com/eks/latest/userguide/managing-ebs-csi.html
