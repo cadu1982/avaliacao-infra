@@ -2,7 +2,7 @@
 
 https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/
 
-### Links referencia:
+### Links referência:
 
 https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/
 
