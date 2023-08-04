@@ -68,15 +68,15 @@ jobs:
         run: |
           helm upgrade --install mongodb ./k8s_db -f ./k8s_db/values-${{ env.SERVER }}-rplc.yaml
       
-      # - name: Replace Environment Variables
-      #   run: envsubst < ./k8s_app/values-${{ env.SERVER }}.yaml > ./k8s_app/values-${{ env.SERVER }}-rplc.yaml
-      #   env:
-      #     GENERAL_TAG: ${{ env.GENERAL_TAG }}
-      #     MONGO_URL: ${{ secrets.MONGO_URL }}
+      - name: Replace Environment Variables
+        run: envsubst < ./k8s_app/values-${{ env.SERVER }}.yaml > ./k8s_app/values-${{ env.SERVER }}-rplc.yaml
+        env:
+          GENERAL_TAG: ${{ env.GENERAL_TAG }}
+          MONGO_URL: ${{ secrets.MONGO_URL }}
                 
-      # - name: Deploy App
-      #   run: |
-      #     helm upgrade --install app ./k8s_app -f ./k8s_app/values-${{ env.SERVER }}-rplc.yaml
+      - name: Deploy App
+        run: |
+          helm upgrade --install app ./k8s_app -f ./k8s_app/values-${{ env.SERVER }}-rplc.yaml
 
   
 

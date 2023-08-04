@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.all.name }}
 spec:
   serviceName: {{ .Values.all.name }}
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       role: {{ .Values.all.name }}
@@ -17,16 +17,10 @@ spec:
       containers:
         - name: {{ .Values.all.name }}
           image: {{ .Values.container.image }}
-          env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: {{ .Values.env.MONGO_INITDB_ROOT_USERNAME }}
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: {{ .Values.env.MONGO_INITDB_ROOT_PASSWORD }}
           command:
             - mongod
             - "--replSet"
             - rs0
-            - "--bind_ip_all"
           ports:
             - containerPort: {{ .Values.container.ports.containerPort }}
           volumeMounts:
