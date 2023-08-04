@@ -25,6 +25,7 @@ spec:
           command:
             - mongod
             - "--replSet"
+            - "--bind_ip_all"
             - rs0
           ports:
             - containerPort: {{ .Values.container.ports.containerPort }}
