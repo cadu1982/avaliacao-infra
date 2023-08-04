@@ -25,10 +25,4 @@ spec:
             value: {{ .Values.env.MONGO_INITDB_ROOT_USERNAME }}
           - name: MONGO_INITDB_ROOT_PASSWORD
             value: {{ .Values.env.MONGO_INITDB_ROOT_PASSWORD }}
-        volumeMounts:
-            - name: mongodb-data
-              mountPath: /data/db
-      volumes:
-        - name: mongodb-data
-          persistentVolumeClaim:
-            claimName: mongodb-pvc
+        
