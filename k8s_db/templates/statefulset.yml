@@ -27,9 +27,9 @@ spec:
             value: {{ .Values.env.MONGO_INITDB_ROOT_PASSWORD }}
         volumeMounts:
         - mountPath: /data/db
-          name: mongo-claim0
+          name: mongodb-pvc
       volumes:
-      - name: mongo-claim0
+      - name: mongodb-pvc
         persistentVolumeClaim:
-          claimName: mongo-claim0
+          claimName: mongodb-pvc
         
