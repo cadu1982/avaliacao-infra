@@ -4,8 +4,8 @@ metadata:
   name: mongodb-pvc
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: efs-sc
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
+  storageClassName: ebs-gp2

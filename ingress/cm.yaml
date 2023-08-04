@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configuration
+  namespace: kube-system
+data:
+  proxy-body-size: "50m"   # Tamanho máximo do corpo da solicitação
+  client-max-body-size: "50m"   # Tamanho máximo do corpo da solicitação do cliente

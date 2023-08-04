@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+  namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+        - example.com   # Substitua pelo seu domínio registrado
+      secretName: my-app-tls-secret   # Substitua pelo nome do segredo que contém o certificado TLS/SSL no ACM
+  rules:
+    - host: example.com   # Substitua pelo seu domínio registrado
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: my-app-service   # Substitua pelo nome do serviço do seu aplicativo
+                port:
+                  number: 80

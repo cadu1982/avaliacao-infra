@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-ingress-controller
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress-controller
+    spec:
+      containers:
+        - name: nginx-ingress-controller
+          image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.30.0
+          args:
+            - /nginx-ingress-controller
+            - --configmap=$(POD_NAMESPACE)/nginx-configuration
+            - --tcp-services-configmap=$(POD_NAMESPACE)/tcp-services
+            - --udp-services-configmap=$(POD_NAMESPACE)/udp-services
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            - name: http
+              containerPort: 80
+            - name: https
+              containerPort: 443
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 1
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 10254
+              scheme: HTTP
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 101
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: nginx-configuration
+              mountPath: /etc/nginx/nginx.conf
+              readOnly: true
+            - name: tcp-services
+              mountPath: /etc/nginx/tcp-services
+              readOnly: true
+            - name: udp-services
+              mountPath: /etc/nginx/udp-services
+              readOnly: true
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: nginx-configuration
+          configMap:
+            name: nginx-configuration
+        - name: tcp-services
+          configMap:
+            name: tcp-services
+        - name: udp-services
+          configMap:
+            name: udp-services

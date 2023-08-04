@@ -11,7 +11,7 @@ terraform {
 
   backend "s3" {
     bucket = "entrega-infra-remote-state"
-    key    = "entrega-infra/terraform.tfstate"
+    key    = "ebs-infra/terraform.tfstate"
     region = "us-east-1"
   }
 }
